@@ -2,7 +2,7 @@ Ansible-Teamwork
 ============================================================================================
 
 Manage Your team member permission use ansible.
-It is useful when your teamwork treat "a team" as atomic unit to assign machine resource in a large team.
+It is useful when your teamwork treat "a team" as atomic unit to assign machine resource in a large team or company.
 
 
 Install
