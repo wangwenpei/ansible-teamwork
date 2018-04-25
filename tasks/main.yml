@@ -1,0 +1,37 @@
+---
+- name: Add keys
+  authorized_key:
+      user: "{{ ansible_user }}"
+      state: present
+      key: "{{ lookup('file', item.src) }}"
+  with_filetree: "{{ pubkey_path }}"
+  when: >
+    item.state == 'file'
+      and '.pub' in item.path
+      and hostvars[inventory_hostname].group_names[0]
+        == item.path.replace(".pub","")
+
+- name: Refund keys
+  authorized_key:
+    user: "{{ ansible_user }}"
+    state: absent
+    key: "{{ lookup('file', item.src) }}"
+  with_filetree: "{{ pubkey_path }}"
+  when: >
+    item.state == 'file'
+    and '.pub' in item.path
+    and hostvars[inventory_hostname].refund|default(false)|bool
+    and hostvars[inventory_hostname].group_names[0]
+      == item.path.replace(".pub","")
+
+- name: Destory keys
+  authorized_key:
+    user: "{{ ansible_user }}"
+    state: absent
+    key: "{{ lookup('file', item.src) }}"
+  with_filetree: "{{ departing_pubkey_path }}"
+  when: >
+    item.state == 'file'
+    and '.pub' in item.path
+    and hostvars[inventory_hostname].group_names[0]
+      == item.path.replace(".pub","")
