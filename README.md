@@ -1,4 +1,4 @@
-Ansible-Teamwork ![](https://secure.travis-ci.org/wangwenpei/ansible-pypy.png?branch=master)
+Ansible-Teamwork
 ============================================================================================
 
 Manage Your team member permission use ansible.
