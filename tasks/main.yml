@@ -1,4 +1,8 @@
 ---
+- debug:
+    var: hostvars[inventory_hostname].group_names
+    verbosity: 4
+
 - name: Add keys
   authorized_key:
       user: "{{ ansible_user }}"
@@ -8,8 +12,8 @@
   when: >
     item.state == 'file'
       and '.pub' in item.path
-      and hostvars[inventory_hostname].group_names[0]
-        == item.path.replace(".pub","")
+      and item.path.replace(".pub","") in hostvars[inventory_hostname]['group_names']
+  register: result
 
 - name: Refund keys
   authorized_key:
@@ -21,8 +25,7 @@
     item.state == 'file'
     and '.pub' in item.path
     and hostvars[inventory_hostname].refund|default(false)|bool
-    and hostvars[inventory_hostname].group_names[0]
-      == item.path.replace(".pub","")
+    and item.path.replace(".pub","") in hostvars[inventory_hostname]['group_names']
 
 - name: Destory keys
   authorized_key:
@@ -33,5 +36,4 @@
   when: >
     item.state == 'file'
     and '.pub' in item.path
-    and hostvars[inventory_hostname].group_names[0]
-      == item.path.replace(".pub","")
+    and item.path.replace(".pub","") in hostvars[inventory_hostname]['group_names']
